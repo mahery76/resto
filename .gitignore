@@ -1,0 +1,68 @@
+# Ignore build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa]ppPackages/
+[Tt]est[Rr]esult*/
+[Rr]esult/
+*.build.cs
+*.user
+*.rsuser
+*.suo
+*.cache
+*.pdb
+*.exe
+*.dll
+*.app
+*.log
+*.vs/
+.vscode/
+*.nupkg
+*.snupkg
+
+# Ignore Visual Studio temporary files, build results, and
+# build directories
+.vs/
+.vscode/
+*.user
+*.suo
+*.tmp
+*.userosscache
+*.userprefs
+
+# Rider/JetBrains specific
+.idea/
+.idea_modules/
+*.ipr
+*.iws
+*.iml
+
+# ASP.NET
+*.Publish.xml
+*.ncrunchsolution
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Ignore generated files for NuGet packages
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+**/bin/
+**/obj/
+*.csproj.user
+*.dotnet_tool.json
+*.dotnet-tools.json
+
+# Ignore temporary files
+*.tmp
+*.temp
+*.log
+*.vsixmanifest
+*.VSIXProject
+
+# Ignore coverage tool directories
+coverage/
+TestResults/

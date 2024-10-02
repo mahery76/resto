@@ -1,6 +1,12 @@
-@resto.api_HostAddress = http://localhost:5290
+@host = http://localhost
+@port = 5290
+@resto_api_HostAddress = {{host}}:{{port}}
 
-GET {{resto.api_HostAddress}}/weatherforecast/
+GET {{resto_api_HostAddress}}/api/weatherforecast/example
 Accept: application/json
+ProjectUrl: {{$projectUrl}}
+Guid: {{$guid}}
+LocalDate: {{$datetime iso8601}}
+Random-int: {{$randomInt}}
 
 ###

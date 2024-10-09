@@ -2,7 +2,7 @@
 @port = 5290
 @resto_api_HostAddress = {{host}}:{{port}}
 
-GET {{resto_api_HostAddress}}/api/weatherforecast/example
+GET {{resto_api_HostAddress}}/api/weatherforecast/14/example?max=15
 Accept: application/json
 ProjectUrl: {{$projectUrl}}
 Guid: {{$guid}}
@@ -10,3 +10,9 @@ LocalDate: {{$datetime iso8601}}
 Random-int: {{$randomInt}}
 
 ###
+
+POST {{resto_api_HostAddress}}/api/weatherforecast/
+Content-Type: : application/json
+
+"Mahery"
+

@@ -16,13 +16,29 @@ public class WeatherForecastController : ControllerBase
         _weatherForecastService = weatherForecastService;
     }
 
+    // [HttpGet]
+    // [Route("{take}/example")]
+    // public IEnumerable<WeatherForecast> Get([FromQuery]int max, [FromRoute]int take)
+    // {
+    //     var result = _weatherForecastService.Get();
+    //     return result;
+    // }
+
     [HttpGet]
-    [Route("example")]
-    public IEnumerable<WeatherForecast> Get()
+    [Route("{take}/example")]
+    public ObjectResult Get([FromQuery]int max, [FromRoute]int take)
     {
-        var result = _weatherForecastService.Get();
-        return result;
+        var result = _weatherForecastService.Get().First();
+        return StatusCode(400, result);
     }
+
+    [HttpPost]
+     public string Hello([FromBody] string name)
+    {
+        return $"Hello {name}";
+    }
+
+
 }
 
 

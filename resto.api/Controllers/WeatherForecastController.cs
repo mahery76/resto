@@ -37,8 +37,6 @@ public class WeatherForecastController : ControllerBase
     {
         return $"Hello {name}";
     }
-
-
 }
 
 

@@ -23,6 +23,7 @@ x86/
 
 # Ignore Visual Studio temporary files, build results, and
 # build directories
+
 .vs/
 .vscode/
 *.user

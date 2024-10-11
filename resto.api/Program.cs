@@ -1,21 +1,22 @@
-using resto.api.Controllers;
+using Microsoft.AspNetCore.Mvc;
+using resto.application.Services;
+using resto.infrastructure.Data;
+using resto.infrastructure.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddDbContext<ProduitContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IProduitRepository, ProduitRepository>();
+builder.Services.AddScoped<IProduitService, ProduitService>();
 
 builder.Services.AddControllers();
 
-builder.Services.AddScoped<WeatherForecastService>();
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-
-
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

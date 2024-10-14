@@ -13,6 +13,7 @@ public class ProduitsController : ControllerBase
     public ProduitsController(IProductContract produitService)
     {
         _produitService = produitService;
+
     }
 
     [HttpGet("{id}")]
@@ -40,6 +41,7 @@ public class ProduitsController : ControllerBase
     }
 
     [HttpPost]
+    [Route("/add_produit")]
     public async Task<ActionResult<Produit>> CreateProduit(Produit dto)
     {
         var produit = new Produit

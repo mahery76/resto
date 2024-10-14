@@ -9,6 +9,7 @@ public class ProduitContext : DbContext
 
     public ProduitContext(DbContextOptions<ProduitContext> options) : base(options) { }
 
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Produit>()

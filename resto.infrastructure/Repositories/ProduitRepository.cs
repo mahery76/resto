@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using resto.domain.Entities;
 using resto.domain.Interfaces;
 using resto.infrastructure.Data;
+
+
 namespace resto.infrastructure.Repositories;
 
 public class ProduitRepository : IProduitRepository

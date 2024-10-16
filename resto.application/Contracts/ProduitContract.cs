@@ -11,3 +11,4 @@ public interface IProductContract
     Task UpdateProduitAsync(Produit produit);
     Task DeleteProduitAsync(Guid id);
 }
+

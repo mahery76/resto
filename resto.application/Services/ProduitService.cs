@@ -26,6 +26,7 @@ public class ProduitService : IProductContract
 
     public async Task CreateProduitAsync(Produit produit)
     {
+        produit.Id = Guid.NewGuid();
         await _repository.CreateAsync(produit);
     }
 

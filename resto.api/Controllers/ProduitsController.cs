@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using resto.application.Contracts;
 using resto.domain.Entities;
+
 namespace resto.api.Controllers;
 
 [ApiController]
@@ -40,7 +41,6 @@ public class ProduitsController : ControllerBase
     }
 
     [HttpPost]
-    [Route("/add_produit")]
     public async Task<ActionResult<Produit>> CreateProduit(Produit dto)
     {
         var produit = new Produit

@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using resto.domain.Entities;
-using resto.domain.Interfaces;
+using resto.domain.Repositories;
 using resto.infrastructure.Data;
 
 

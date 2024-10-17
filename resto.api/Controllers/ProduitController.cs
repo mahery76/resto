@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using resto.application.Contracts;
-// using resto.application.Dtos;
 using resto.domain.Entities;
 namespace resto.api.Controllers;
 
@@ -23,8 +22,8 @@ public class ProduitsController : ControllerBase
         return Ok(new Produit
         {
             Id = produit.Id,
-            Nom_Produit = produit.Nom_Produit,
-            Prix_produit = produit.Prix_produit
+            Nom = produit.Nom,
+            Prix = produit.Prix
         });
     }
 
@@ -35,8 +34,8 @@ public class ProduitsController : ControllerBase
         return Ok(produits.Select(p => new Produit
         {
             Id = p.Id,
-            Nom_Produit = p.Nom_Produit,
-            Prix_produit = p.Prix_produit
+            Nom = p.Nom,
+            Prix = p.Prix
         }));
     }
 
@@ -46,8 +45,8 @@ public class ProduitsController : ControllerBase
     {
         var produit = new Produit
         {
-            Nom_Produit = dto.Nom_Produit,
-            Prix_produit = dto.Prix_produit
+            Nom = dto.Nom,
+            Prix = dto.Prix
         };
 
         await _produitService.CreateProduitAsync(produit);
@@ -55,8 +54,8 @@ public class ProduitsController : ControllerBase
         return CreatedAtAction(nameof(GetProduitById), new { id = produit.Id }, new Produit
         {
             Id = produit.Id,
-            Nom_Produit = produit.Nom_Produit,
-            Prix_produit = produit.Prix_produit
+            Nom = produit.Nom,
+            Prix = produit.Prix
         });
     }
 
@@ -69,8 +68,8 @@ public class ProduitsController : ControllerBase
             return NotFound();
         }
 
-        produit.Nom_Produit = dto.Nom_Produit;
-        produit.Prix_produit = dto.Prix_produit;
+        produit.Nom = dto.Nom;
+        produit.Prix = dto.Prix;
 
         await _produitService.UpdateProduitAsync(produit);
 

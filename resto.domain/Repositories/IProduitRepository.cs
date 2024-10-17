@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using resto.domain.Entities;
 
-namespace resto.domain.Interfaces;
+namespace resto.domain.Repositories;
 
 public interface IProduitRepository
 {

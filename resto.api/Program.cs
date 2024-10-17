@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using resto.domain.Interfaces;
+using resto.domain.Repositories;
 using resto.application.Services;
 using resto.infrastructure.Data;
 using resto.infrastructure.Repositories;

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using resto.domain.Entities;
-using resto.domain.Interfaces;
+using resto.domain.Repositories;
 using resto.application.Contracts;
 
 namespace resto.application.Services;

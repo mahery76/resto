@@ -9,7 +9,7 @@ public class ProduitValidator : AbstractValidator<Produit>
 {
     public ProduitValidator()
     {
-        RuleFor(p => p.Nom_Produit).NotEmpty().WithMessage("Name is required");
-        RuleFor(p => p.Prix_produit).GreaterThan(0).WithMessage("Price must be greater than zero");
+        RuleFor(p => p.Nom).NotEmpty().WithMessage("Name is required");
+        RuleFor(p => p.Prix).GreaterThan(0).WithMessage("Price must be greater than zero");
     }
 }

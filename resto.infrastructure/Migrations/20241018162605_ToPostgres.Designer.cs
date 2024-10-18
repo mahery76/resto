@@ -4,35 +4,38 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using resto.infrastructure.Data;
 
 #nullable disable
 
 namespace resto.infrastructure.Migrations
 {
-    [DbContext(typeof(ProduitContext))]
-    [Migration("20241016082653_initial1")]
-    partial class initial1
+    [DbContext(typeof(PostgresProduitContext))]
+    [Migration("20241018162605_ToPostgres")]
+    partial class ToPostgres
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("resto.domain.Entities.Produit", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValueSql("NEWID()");
+                        .HasColumnType("uuid");
 
-                    b.Property<string>("Nom_Produit")
+                    b.Property<string>("Nom")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
-                    b.Property<decimal>("Prix_produit")
-                        .HasColumnType("TEXT");
+                    b.Property<decimal>("Prix")
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 

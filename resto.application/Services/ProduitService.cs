@@ -23,7 +23,7 @@ public class ProduitService : IProductContract
     {
         return await _repository.GetAllAsync();
     }
-
+ 
     public async Task CreateProduitAsync(Produit produit)
     {
         produit.Id = Guid.NewGuid();

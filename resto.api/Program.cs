@@ -8,10 +8,14 @@ using resto.infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<ProduitContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+// builder.Services.AddDbContext<SqlLiteProduitContext>(options =>
+//     options.UseSqlite(builder.Configuration.GetConnectionString("SqLiteConnection")));
 
-builder.Services.AddScoped<IProduitRepository, ProduitRepository>();
+
+builder.Services.AddDbContext<PostgresProduitContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
+
+builder.Services.AddScoped<IProduitRepository, ProduitRepository>(); 
 builder.Services.AddScoped<IProductContract, ProduitService>();
 
 builder.Services.AddControllers();  

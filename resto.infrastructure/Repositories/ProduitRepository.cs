@@ -9,16 +9,17 @@ namespace resto.infrastructure.Repositories;
 
 public class ProduitRepository : IProduitRepository
 {
-    private readonly ProduitContext _context;
+    private readonly PostgresProduitContext _context;
 
-    public ProduitRepository(ProduitContext context)
+    public ProduitRepository(PostgresProduitContext context)
     {
         _context = context;
     }
 
     public async Task<Produit> GetByIdAsync(Guid id)
     {
-        return await _context.Produits.FindAsync(id);
+        var produit = await _context.Produits.FindAsync(id);
+        return produit ?? throw new InvalidOperationException("produit not found");
     }
 
     public async Task<IEnumerable<Produit>> GetAllAsync()

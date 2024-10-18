@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace resto.infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class initial1 : Migration
+    public partial class ToPostgres : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,9 +15,9 @@ namespace resto.infrastructure.Migrations
                 name: "Produits",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false, defaultValueSql: "NEWID()"),
-                    Nom_Produit = table.Column<string>(type: "TEXT", nullable: false),
-                    Prix_produit = table.Column<decimal>(type: "TEXT", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Nom = table.Column<string>(type: "text", nullable: false),
+                    Prix = table.Column<decimal>(type: "numeric", nullable: false)
                 },
                 constraints: table =>
                 {

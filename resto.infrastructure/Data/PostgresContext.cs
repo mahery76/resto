@@ -16,8 +16,8 @@ public class PostgresContext : DbContext
             .ValueGeneratedNever();
 
         modelBuilder.Entity<Commande>()
-            .HasOne<Produit>()
-            .WithMany()
+            .HasOne(c => c.Produit)
+            .WithMany(p => p.Commande)
             .HasForeignKey(c => c.ProduitId);
     }
 }

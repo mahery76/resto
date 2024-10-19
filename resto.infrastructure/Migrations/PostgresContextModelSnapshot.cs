@@ -22,6 +22,28 @@ namespace resto.infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("resto.domain.Entities.Commande", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DateCommande")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ProduitId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("QuantiteProduit")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProduitId");
+
+                    b.ToTable("Commandes");
+                });
+
             modelBuilder.Entity("resto.domain.Entities.Produit", b =>
                 {
                     b.Property<Guid>("Id")
@@ -37,6 +59,22 @@ namespace resto.infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Produits");
+                });
+
+            modelBuilder.Entity("resto.domain.Entities.Commande", b =>
+                {
+                    b.HasOne("resto.domain.Entities.Produit", "Produit")
+                        .WithMany("Commande")
+                        .HasForeignKey("ProduitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Produit");
+                });
+
+            modelBuilder.Entity("resto.domain.Entities.Produit", b =>
+                {
+                    b.Navigation("Commande");
                 });
 #pragma warning restore 612, 618
         }

@@ -7,7 +7,7 @@ public interface IProductContract
 {
     Task<Produit> GetProduitByIdAsync(Guid id);
     Task<IEnumerable<Produit>> GetAllProduitsAsync();
-    Task CreateProduitAsync(Produit produit);resto.application/Contracts/CommandeContract.cs
+    Task CreateProduitAsync(Produit produit);
     Task UpdateProduitAsync(Produit produit);
     Task DeleteProduitAsync(Guid id);
 }

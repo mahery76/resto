@@ -22,7 +22,8 @@ public class CommandesController : ControllerBase
         return Ok(new Commande
         {
             Id = Commande.Id,
-            Quantite = Commande.Quantite,
+            QuantiteProduit = Commande.QuantiteProduit,
+            DateCommande = Commande.DateCommande,
             // we need to return produit object here
             ProduitId = Commande.ProduitId
         });
@@ -35,7 +36,8 @@ public class CommandesController : ControllerBase
         return Ok(AllCommandes.Select(CurrentCommande => new Commande
         {
             Id = CurrentCommande.Id,
-            Quantite = CurrentCommande.Quantite,
+            DateCommande = CurrentCommande.DateCommande,
+            QuantiteProduit = CurrentCommande.QuantiteProduit,
             ProduitId = CurrentCommande.ProduitId
         }));
     }
@@ -45,14 +47,16 @@ public class CommandesController : ControllerBase
     {
         var Commande = new Commande
         {
-            Quantite = dto.Quantite,
+            DateCommande = dto.DateCommande,
+            QuantiteProduit = dto.QuantiteProduit,
             ProduitId = dto.ProduitId
         };
         await _commandeService.CreateCommandeAsync(Commande);
         return CreatedAtAction(nameof(GetCommandeById), new {id = Commande.Id }, new Commande
         {
             Id = Commande.Id,
-            Quantite = Commande.Quantite,
+            DateCommande = Commande.DateCommande,
+            QuantiteProduit = Commande.QuantiteProduit,
             ProduitId = Commande.ProduitId
         });
     }
@@ -65,7 +69,8 @@ public class CommandesController : ControllerBase
         {
             return NotFound();
         }
-        Commande.Quantite = dto.Quantite;
+        Commande.DateCommande = dto.DateCommande;
+        Commande.QuantiteProduit = dto.QuantiteProduit;
         Commande.ProduitId = dto.ProduitId;
 
         await _commandeService.UpdateCommandeAsync(Commande);

@@ -4,14 +4,13 @@ using resto.domain.Entities;
 using resto.domain.Repositories;
 using resto.infrastructure.Data;
 
-
 namespace resto.infrastructure.Repositories;
 
 public class ProduitRepository : IProduitRepository
 {
-    private readonly PostgresProduitContext _context;
+    private readonly PostgresContext _context;
 
-    public ProduitRepository(PostgresProduitContext context)
+    public ProduitRepository(PostgresContext context)
     {
         _context = context;
     }

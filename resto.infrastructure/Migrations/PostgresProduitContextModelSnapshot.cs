@@ -10,8 +10,8 @@ using resto.infrastructure.Data;
 
 namespace resto.infrastructure.Migrations
 {
-    [DbContext(typeof(PostgresProduitContext))]
-    partial class PostgresProduitContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(PostgresContext))]
+    partial class PostgresContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

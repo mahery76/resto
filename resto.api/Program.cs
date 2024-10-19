@@ -12,11 +12,14 @@ var builder = WebApplication.CreateBuilder(args);
 //     options.UseSqlite(builder.Configuration.GetConnectionString("SqLiteConnection")));
 
 
-builder.Services.AddDbContext<PostgresProduitContext>(options =>
+builder.Services.AddDbContext<PostgresContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
 
 builder.Services.AddScoped<IProduitRepository, ProduitRepository>(); 
 builder.Services.AddScoped<IProductContract, ProduitService>();
+
+builder.Services.AddScoped<ICommandeRepository, CommandeRepository>();
+builder.Services.AddScoped<ICommandeContract, CommandeService>();
 
 builder.Services.AddControllers();  
 

@@ -11,7 +11,7 @@ using resto.infrastructure.Data;
 
 namespace resto.infrastructure.Migrations
 {
-    [DbContext(typeof(PostgresProduitContext))]
+    [DbContext(typeof(PostgresContext))]
     [Migration("20241018162605_ToPostgres")]
     partial class ToPostgres
     {

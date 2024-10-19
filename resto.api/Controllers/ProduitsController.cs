@@ -19,59 +19,59 @@ public class ProduitsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<Produit>> GetProduitById(Guid id)
     {
-        var produit = await _produitService.GetProduitByIdAsync(id);
+        var Produit = await _produitService.GetProduitByIdAsync(id);
         return Ok(new Produit
         {
-            Id = produit.Id,
-            Nom = produit.Nom,
-            Prix = produit.Prix
+            Id = Produit.Id,
+            Nom = Produit.Nom,
+            Prix = Produit.Prix
         });
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Produit>>> GetAllProduits()
     {
-        var produits = await _produitService.GetAllProduitsAsync();
-        return Ok(produits.Select(p => new Produit
+        var AllProduits = await _produitService.GetAllProduitsAsync();
+        return Ok(AllProduits.Select(CurrentProduit => new Produit
         {
-            Id = p.Id,
-            Nom = p.Nom,
-            Prix = p.Prix
+            Id = CurrentProduit.Id,
+            Nom = CurrentProduit.Nom,
+            Prix = CurrentProduit.Prix
         }));
     }
 
     [HttpPost]
     public async Task<ActionResult<Produit>> CreateProduit(Produit dto)
     {
-        var produit = new Produit
+        var Produit = new Produit
         {
             Nom = dto.Nom,
             Prix = dto.Prix
         };
 
-        await _produitService.CreateProduitAsync(produit);
+        await _produitService.CreateProduitAsync(Produit);
 
-        return CreatedAtAction(nameof(GetProduitById), new { id = produit.Id }, new Produit
+        return CreatedAtAction(nameof(GetProduitById), new { id = Produit.Id }, new Produit
         {
-            Id = produit.Id,
-            Nom = produit.Nom,
-            Prix = produit.Prix
+            Id = Produit.Id,
+            Nom = Produit.Nom,
+            Prix = Produit.Prix
         });
     }
 
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateProduit(Guid id, Produit dto)
     {
-        var produit = await _produitService.GetProduitByIdAsync(id);
-        if (produit == null)
+        var Produit = await _produitService.GetProduitByIdAsync(id);
+        if (Produit == null)
         {
             return NotFound();
         }
 
-        produit.Nom = dto.Nom;
-        produit.Prix = dto.Prix;
+        Produit.Nom = dto.Nom;
+        Produit.Prix = dto.Prix;
 
-        await _produitService.UpdateProduitAsync(produit);
+        await _produitService.UpdateProduitAsync(Produit);
 
         return NoContent();
     }

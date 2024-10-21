@@ -3,7 +3,7 @@ using resto.domain.Entities;
 
 namespace resto.application.Contracts;
 
-public interface IProductContract
+public interface IProduitContract
 {
     Task<Produit> GetProduitByIdAsync(Guid id);
     Task<IEnumerable<Produit>> GetAllProduitsAsync();

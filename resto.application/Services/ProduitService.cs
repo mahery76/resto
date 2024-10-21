@@ -5,7 +5,7 @@ using resto.application.Contracts;
 
 namespace resto.application.Services;
 
-public class ProduitService : IProductContract
+public class ProduitService : IProduitContract
 {
     private readonly IProduitRepository _repository;
 

@@ -1,5 +1,7 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using resto.application.Contracts;
+using resto.application.Dtos;
 using resto.domain.Entities;
 
 namespace resto.api.Controllers;
@@ -9,10 +11,34 @@ namespace resto.api.Controllers;
 public class CommandesController : ControllerBase
 {
     private readonly ICommandeContract _commandeService;
+    private readonly IProduitContract _produitService;
+    private readonly IMapper _mapper;
 
-    public CommandesController(ICommandeContract commandeService)
+    public CommandesController(ICommandeContract commandeService, IProduitContract produitService, IMapper mapper)
     {
         _commandeService = commandeService;
+        _produitService = produitService;
+        _mapper = mapper;
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Commande>> CreateCommande(Commande dto)
+    {
+        var produit = await _produitService.GetProduitByIdAsync(dto.ProduitId);
+        if (produit == null)
+        {
+            return BadRequest("Invalid ProduitId.");
+        }
+
+        var commande = _mapper.Map<Commande>(dto);
+        commande.Produit = produit;
+        commande.DateCommande = commande.DateCommande.ToUniversalTime(); // Ensure DateCommande is in UTC
+        await _commandeService.CreateCommandeAsync(commande);
+
+        var resultDto = _mapper.Map<CreateCommandeDto>(commande);
+        resultDto.Produit = produit;
+
+        return CreatedAtAction(nameof(GetCommandeById), new { id = commande.Id }, resultDto);
     }
 
     [HttpGet("{id}")]
@@ -24,7 +50,7 @@ public class CommandesController : ControllerBase
             Id = Commande.Id,
             QuantiteProduit = Commande.QuantiteProduit,
             DateCommande = Commande.DateCommande,
-            // we need to return produit object here
+            // return produit object here
             ProduitId = Commande.ProduitId
         });
     }
@@ -42,25 +68,6 @@ public class CommandesController : ControllerBase
         }));
     }
 
-    [HttpPost]
-    public async Task<ActionResult<Commande>> CreateCommande(Commande dto)
-    {
-        var Commande = new Commande
-        {
-            DateCommande = dto.DateCommande,
-            QuantiteProduit = dto.QuantiteProduit,
-            ProduitId = dto.ProduitId
-        };
-        await _commandeService.CreateCommandeAsync(Commande);
-        return CreatedAtAction(nameof(GetCommandeById), new {id = Commande.Id }, new Commande
-        {
-            Id = Commande.Id,
-            DateCommande = Commande.DateCommande,
-            QuantiteProduit = Commande.QuantiteProduit,
-            ProduitId = Commande.ProduitId
-        });
-    }
-
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateCommande(Guid id, Commande dto)
     {
@@ -76,7 +83,7 @@ public class CommandesController : ControllerBase
         await _commandeService.UpdateCommandeAsync(Commande);
         return NoContent();
     }
-    
+
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteCommande(Guid id)
     {

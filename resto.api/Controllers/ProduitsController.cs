@@ -8,9 +8,9 @@ namespace resto.api.Controllers;
 [Route("api/[controller]")]
 public class ProduitsController : ControllerBase
 {
-    private readonly IProductContract _produitService;
+    private readonly IProduitContract _produitService;
 
-    public ProduitsController(IProductContract produitService)
+    public ProduitsController(IProduitContract produitService)
     {
         _produitService = produitService;
 

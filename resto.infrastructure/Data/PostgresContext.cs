@@ -17,7 +17,7 @@ public class PostgresContext : DbContext
 
         modelBuilder.Entity<Commande>()
             .HasOne(c => c.Produit)
-            .WithMany(p => p.Commande)
+            .WithMany()
             .HasForeignKey(c => c.ProduitId);
     }
 }

@@ -6,6 +6,8 @@ using resto.application.Contracts;
 using resto.infrastructure.Data;
 using resto.infrastructure.Repositories;
 using resto.application;
+using AutoMapper;
+using resto.application.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +30,8 @@ builder.Services.AddScoped<ICommandeContract, CommandeService>();
 builder.Services.AddControllers();
 
 builder.Services.AddApplicationLayer();
+
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 app.UseHttpsRedirection();

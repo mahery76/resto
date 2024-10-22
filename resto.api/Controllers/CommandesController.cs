@@ -1,7 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using resto.application.Contracts;
-using resto.application.Dtos;
+using resto.application.Dtos.Responses;
 using resto.domain.Entities;
 
 namespace resto.api.Controllers;
@@ -24,20 +24,34 @@ public class CommandesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Commande>> CreateCommande(Commande dto)
     {
+        // Retrieve the product associated with the given ProduitId from the service
         var produit = await _produitService.GetProduitByIdAsync(dto.ProduitId);
+        
+        // If the product does not exist, return a BadRequest response with an error message
         if (produit == null)
         {
             return BadRequest("Invalid ProduitId.");
         }
 
+        // Map the incoming DTO to a Commande entity
         var commande = _mapper.Map<Commande>(dto);
+        
+        // Assign the retrieved product to the Commande entity
         commande.Produit = produit;
-        commande.DateCommande = commande.DateCommande.ToUniversalTime(); // Ensure DateCommande is in UTC
+        
+        // Convert the DateCommande to UTC to ensure consistency
+        commande.DateCommande = commande.DateCommande.ToUniversalTime();
+        
+        // Create the Commande entity using the service
         await _commandeService.CreateCommandeAsync(commande);
 
-        var resultDto = _mapper.Map<CreateCommandeDto>(commande);
+        // Map the created Commande entity back to a CreateCommandeResponseDto
+        var resultDto = _mapper.Map<CreateCommandeResponseDto>(commande);
+        
+        // Assign the retrieved product to the result DTO
         resultDto.Produit = produit;
 
+        // Return a CreatedAtAction response with the created Commande's details
         return CreatedAtAction(nameof(GetCommandeById), new { id = commande.Id }, resultDto);
     }
 
@@ -81,13 +95,6 @@ public class CommandesController : ControllerBase
         Commande.ProduitId = dto.ProduitId;
 
         await _commandeService.UpdateCommandeAsync(Commande);
-        return NoContent();
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteCommande(Guid id)
-    {
-        await _commandeService.DeleteCommandeAsync(id);
         return NoContent();
     }
 }

@@ -41,12 +41,12 @@ public class ProduitsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Produit>> CreateProduit(Produit dto)
+    public async Task<ActionResult<Produit>> CreateProduit(Produit produit)
     {
         var Produit = new Produit
         {
-            Nom = dto.Nom,
-            Prix = dto.Prix
+            Nom = produit.Nom,
+            Prix = produit.Prix
         };
 
         await _produitService.CreateProduitAsync(Produit);
@@ -60,7 +60,7 @@ public class ProduitsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateProduit(Guid id, Produit dto)
+    public async Task<ActionResult> UpdateProduit(Guid id, Produit produit)
     {
         var Produit = await _produitService.GetProduitByIdAsync(id);
         if (Produit == null)
@@ -68,8 +68,8 @@ public class ProduitsController : ControllerBase
             return NotFound();
         }
 
-        Produit.Nom = dto.Nom;
-        Produit.Prix = dto.Prix;
+        Produit.Nom = produit.Nom;
+        Produit.Prix = produit.Prix;
 
         await _produitService.UpdateProduitAsync(Produit);
 

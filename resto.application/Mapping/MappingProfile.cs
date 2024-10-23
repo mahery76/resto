@@ -1,5 +1,6 @@
 using AutoMapper;
 using resto.application.Dtos.Responses;
+using resto.application.Dtos.Requests;
 using resto.domain.Entities;
 
 namespace resto.application.Mapping
@@ -8,8 +9,17 @@ namespace resto.application.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<Commande, CreateCommandeResponseDto>()
-            .ForMember(dest => dest.Produit, opt => opt.Ignore())
+
+            // this will create Commande from CreateCommandeRequestDto
+            CreateMap<CreateCommandeRequestDto, Commande>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.DateCommande, opt => opt.MapFrom(src => System.DateTime.UtcNow));
+
+            // this will create CreateCommandeResponseDto from Commande
+            CreateMap<Commande, CreateCommandeResponseDto>();
+
+            CreateMap<Commande, GetAllCommandesResponseDto>();
+
         }
     }
 }

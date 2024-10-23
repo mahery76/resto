@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using resto.application.Contracts;
 using resto.application.Dtos.Responses;
+using resto.application.Dtos.Requests;
 using resto.domain.Entities;
 
 namespace resto.api.Controllers;
@@ -22,43 +23,37 @@ public class CommandesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Commande>> CreateCommande(Commande dto)
+    public async Task<ActionResult<Commande>> CreateCommande([FromBody] CreateCommandeRequestDto commande)
     {
-        // Retrieve the product associated with the given ProduitId from the service
-        var produit = await _produitService.GetProduitByIdAsync(dto.ProduitId);
-        
-        // If the product does not exist, return a BadRequest response with an error message
+        var produit = await _produitService.GetProduitByIdAsync(commande.ProduitId);
         if (produit == null)
         {
             return BadRequest("Invalid ProduitId.");
         }
-
-        // Map the incoming DTO to a Commande entity
-        var commande = _mapper.Map<Commande>(dto);
+        var InputCommande = _mapper.Map<Commande>(commande);
         
         // Assign the retrieved product to the Commande entity
-        commande.Produit = produit;
+        InputCommande.Produit = produit;
         
-        // Convert the DateCommande to UTC to ensure consistency
-        commande.DateCommande = commande.DateCommande.ToUniversalTime();
         
         // Create the Commande entity using the service
-        await _commandeService.CreateCommandeAsync(commande);
+        await _commandeService.CreateCommandeAsync(InputCommande);
 
-        // Map the created Commande entity back to a CreateCommandeResponseDto
-        var resultDto = _mapper.Map<CreateCommandeResponseDto>(commande);
-        
-        // Assign the retrieved product to the result DTO
-        resultDto.Produit = produit;
+        // Map the created Commande entity  to a CreateCommandeResponseDto
+        var resultDto = _mapper.Map<CreateCommandeResponseDto>(InputCommande);
 
-        // Return a CreatedAtAction response with the created Commande's details
-        return CreatedAtAction(nameof(GetCommandeById), new { id = commande.Id }, resultDto);
+        return Ok(resultDto);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Commande>> GetCommandeById(Guid id)
     {
         var Commande = await _commandeService.GetCommandeByIdAsync(id);
+        if (Commande == null)
+        {
+            return BadRequest("Invalid CommandeID.");
+        }
+
         return Ok(new Commande
         {
             Id = Commande.Id,
@@ -70,16 +65,21 @@ public class CommandesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Commande>>> GetAllCommandes()
+    public async Task<ActionResult<IEnumerable<GetAllCommandesResponseDto>>> GetAllCommandes()
     {
         var AllCommandes = await _commandeService.GetAllCommandeAsync();
-        return Ok(AllCommandes.Select(CurrentCommande => new Commande
+        var resultDto = new List<GetAllCommandesResponseDto>();
+        foreach (var commande in AllCommandes)
         {
-            Id = CurrentCommande.Id,
-            DateCommande = CurrentCommande.DateCommande,
-            QuantiteProduit = CurrentCommande.QuantiteProduit,
-            ProduitId = CurrentCommande.ProduitId
-        }));
+            var outputCommande = _mapper.Map<GetAllCommandesResponseDto>(commande);
+            var produit = await _produitService.GetProduitByIdAsync(commande.ProduitId);
+            if (produit != null)
+            {
+                outputCommande.Produit = produit;
+            }
+            resultDto.Add(outputCommande);
+        }
+        return Ok(resultDto);
     }
 
     [HttpPut("{id}")]

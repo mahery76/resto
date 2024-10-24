@@ -21,6 +21,14 @@ builder.Services.AddScoped<ICommandeContract, CommandeService>();
 
 builder.Services.AddControllers();
 
+// Add Swagger service
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1",
+    new() { Title = "Resto API", Version = "v1" });
+}); 
+
 builder.Services.AddApplicationLayer();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
@@ -30,4 +38,15 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
+// Enable middleware to serve generated Swagger as a JSON endpoint. 
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Resto API V1");
+    });
+}
+
 app.Run();
+

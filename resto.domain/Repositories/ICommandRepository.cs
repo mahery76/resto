@@ -9,6 +9,4 @@ public interface ICommandeRepository
     Task<IEnumerable<Commande>> GetAllAsync();
 
     Task CreateAsync(Commande commande);
-    Task UpdateAsync(Commande commande);
-    Task DeleteAsync(Guid id);
 }

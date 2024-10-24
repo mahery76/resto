@@ -1,6 +1,9 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using resto.application.Contracts;
 using resto.domain.Entities;
+using resto.application.Dtos.Requests;
+using resto.application.Dtos.Responses;
 
 namespace resto.api.Controllers;
 
@@ -9,22 +12,24 @@ namespace resto.api.Controllers;
 public class ProduitsController : ControllerBase
 {
     private readonly IProduitContract _produitService;
-
-    public ProduitsController(IProduitContract produitService)
+    private readonly IMapper _mapper;
+    public ProduitsController(IProduitContract produitService, IMapper mapper)
     {
         _produitService = produitService;
-
+        _mapper = mapper; ;
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Produit>> GetProduitById(Guid id)
+    [HttpPost]
+    public async Task<ActionResult> CreateProduit([FromBody] CreateProduitRequestDto produit)
     {
-        var Produit = await _produitService.GetProduitByIdAsync(id);
-        return Ok(new Produit
+        var InputProduit = _mapper.Map<Produit>(produit);
+
+        await _produitService.CreateProduitAsync(InputProduit);
+
+        return Ok(new
         {
-            Id = Produit.Id,
-            Nom = Produit.Nom,
-            Prix = Produit.Prix
+            Message = "Produit crée avec succès",
+            Data = InputProduit
         });
     }
 
@@ -32,35 +37,29 @@ public class ProduitsController : ControllerBase
     public async Task<ActionResult<IEnumerable<Produit>>> GetAllProduits()
     {
         var AllProduits = await _produitService.GetAllProduitsAsync();
-        return Ok(AllProduits.Select(CurrentProduit => new Produit
+        var resultDto = new List<GetProduitResponseDto>();
+        foreach (var produit in AllProduits)
         {
-            Id = CurrentProduit.Id,
-            Nom = CurrentProduit.Nom,
-            Prix = CurrentProduit.Prix
-        }));
+            var outputProduit = _mapper.Map<GetProduitResponseDto>(produit);
+            resultDto.Add(outputProduit);
+        }
+        return Ok(AllProduits);
     }
 
-    [HttpPost]
-    public async Task<ActionResult<Produit>> CreateProduit(Produit produit)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Produit>> GetProduitById(Guid id)
     {
-        var Produit = new Produit
+        var Produit = await _produitService.GetProduitByIdAsync(id);
+        if (Produit == null)
         {
-            Nom = produit.Nom,
-            Prix = produit.Prix
-        };
-
-        await _produitService.CreateProduitAsync(Produit);
-
-        return CreatedAtAction(nameof(GetProduitById), new { id = Produit.Id }, new Produit
-        {
-            Id = Produit.Id,
-            Nom = Produit.Nom,
-            Prix = Produit.Prix
-        });
+            return NotFound();
+        }
+        var ProduitResponse = _mapper.Map<GetProduitResponseDto>(Produit);
+        return Ok(ProduitResponse);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateProduit(Guid id, Produit produit)
+    public async Task<ActionResult> UpdateProduit(Guid id, CreateProduitRequestDto produit)
     {
         var Produit = await _produitService.GetProduitByIdAsync(id);
         if (Produit == null)
@@ -71,15 +70,30 @@ public class ProduitsController : ControllerBase
         Produit.Nom = produit.Nom;
         Produit.Prix = produit.Prix;
 
-        await _produitService.UpdateProduitAsync(Produit);
+        var affectedRows = await _produitService.UpdateProduitAsync(Produit);
 
-        return NoContent();
+        if (affectedRows > 0)
+        {
+            return Ok(new
+            {
+                Message = "Produit mis à jour avec succès",
+                AffectedRows = affectedRows
+            });
+        }
+        else
+        {
+            return StatusCode(500, "Une erreur s'est produite lors de la mise à jour du produit.");
+        }
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteProduit(Guid id)
     {
-        await _produitService.DeleteProduitAsync(id);
-        return NoContent();
+        var affectedRows = await _produitService.DeleteProduitAsync(id);
+        return Ok(new
+        {
+            Message = "Produit mis à jour avec succès",
+            AffectedRows = affectedRows
+        });
     }
 }

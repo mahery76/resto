@@ -31,11 +31,11 @@ public class CommandesController : ControllerBase
             return BadRequest("Invalid ProduitId.");
         }
         var InputCommande = _mapper.Map<Commande>(commande);
-        
+
         // Assign the retrieved product to the Commande entity
         InputCommande.Produit = produit;
-        
-        
+
+
         // Create the Commande entity using the service
         await _commandeService.CreateCommandeAsync(InputCommande);
 
@@ -44,34 +44,14 @@ public class CommandesController : ControllerBase
 
         return Ok(resultDto);
     }
-
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Commande>> GetCommandeById(Guid id)
-    {
-        var Commande = await _commandeService.GetCommandeByIdAsync(id);
-        if (Commande == null)
-        {
-            return BadRequest("Invalid CommandeID.");
-        }
-
-        return Ok(new Commande
-        {
-            Id = Commande.Id,
-            QuantiteProduit = Commande.QuantiteProduit,
-            DateCommande = Commande.DateCommande,
-            // return produit object here
-            ProduitId = Commande.ProduitId
-        });
-    }
-
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<GetAllCommandesResponseDto>>> GetAllCommandes()
+    public async Task<ActionResult<IEnumerable<GetCommandeResponseDto>>> GetAllCommandes()
     {
         var AllCommandes = await _commandeService.GetAllCommandeAsync();
-        var resultDto = new List<GetAllCommandesResponseDto>();
+        var resultDto = new List<GetCommandeResponseDto>();
         foreach (var commande in AllCommandes)
         {
-            var outputCommande = _mapper.Map<GetAllCommandesResponseDto>(commande);
+            var outputCommande = _mapper.Map<GetCommandeResponseDto>(commande);
             var produit = await _produitService.GetProduitByIdAsync(commande.ProduitId);
             if (produit != null)
             {
@@ -82,19 +62,22 @@ public class CommandesController : ControllerBase
         return Ok(resultDto);
     }
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateCommande(Guid id, Commande dto)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<GetCommandeResponseDto>> GetCommandeById(Guid id)
     {
         var Commande = await _commandeService.GetCommandeByIdAsync(id);
         if (Commande == null)
         {
-            return NotFound();
+            return BadRequest("Invalid CommandeID.");
         }
-        Commande.DateCommande = dto.DateCommande;
-        Commande.QuantiteProduit = dto.QuantiteProduit;
-        Commande.ProduitId = dto.ProduitId;
-
-        await _commandeService.UpdateCommandeAsync(Commande);
-        return NoContent();
+        var outputCommande = _mapper.Map<GetCommandeResponseDto>(Commande);
+        var produit = await _produitService.GetProduitByIdAsync(Commande.ProduitId);
+        if (produit != null)
+        {
+            outputCommande.Produit = produit;
+        }
+        return Ok(outputCommande);
     }
+
+
 }

@@ -9,16 +9,17 @@ namespace resto.application.Mapping
     {
         public MappingProfile()
         {
+            CreateMap<CreateProduitRequestDto, Produit>();
+            CreateMap<Produit, GetProduitResponseDto>();
 
             // this will create Commande from CreateCommandeRequestDto
             CreateMap<CreateCommandeRequestDto, Commande>()
-            .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.DateCommande, opt => opt.MapFrom(src => System.DateTime.UtcNow));
 
             // this will create CreateCommandeResponseDto from Commande
             CreateMap<Commande, CreateCommandeResponseDto>();
 
-            CreateMap<Commande, GetAllCommandesResponseDto>();
+            CreateMap<Commande, GetCommandeResponseDto>();
 
         }
     }

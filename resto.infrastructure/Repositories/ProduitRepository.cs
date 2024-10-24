@@ -32,19 +32,20 @@ public class ProduitRepository : IProduitRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Produit produit)
+    public async Task<int> UpdateAsync(Produit produit)
     {
         _context.Produits.Update(produit);
-        await _context.SaveChangesAsync();
+        return await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(Guid id)
+    public async Task<int> DeleteAsync(Guid id)
     {
         var produit = await GetByIdAsync(id);
         if (produit != null)
         {
             _context.Produits.Remove(produit);
-            await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync();
         }
+        return 0; 
     }
 }

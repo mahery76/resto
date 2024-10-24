@@ -22,10 +22,7 @@
 - dotnet run
 
 
-
-
-
-Steps for addin new entities: 
+Steps for adding new entitie and its interfaces: 
 domain
 - entity file
 - repository for the entity

@@ -9,6 +9,4 @@ public interface ICommandeContract
     Task<IEnumerable<Commande>> GetAllCommandeAsync();
 
     Task CreateCommandeAsync(Commande commande);
-    Task UpdateCommandeAsync(Commande commande);
-    Task DeleteCommandeAsync(Guid id);
 }

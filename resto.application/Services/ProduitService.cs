@@ -30,14 +30,14 @@ public class ProduitService : IProduitContract
         await _repository.CreateAsync(produit);
     }
 
-    public async Task UpdateProduitAsync(Produit produit)
+    public async Task<int> UpdateProduitAsync(Produit produit)
     {
-        await _repository.UpdateAsync(produit);
+        return await _repository.UpdateAsync(produit);
     }
 
-    public async Task DeleteProduitAsync(Guid id)
+    public async Task<int> DeleteProduitAsync(Guid id)
     {
-        await _repository.DeleteAsync(id);
+        return await _repository.DeleteAsync(id);
     }
 }
 

@@ -27,12 +27,4 @@ public class CommandeService : ICommandeContract
         commande.Id = Guid.NewGuid();
         await _repository.CreateAsync(commande);
     }
-    public async Task UpdateCommandeAsync(Commande commande)
-    {
-        await _repository.UpdateAsync(commande);
-    }
-    public async Task DeleteCommandeAsync(Guid id)
-    {
-        await _repository.DeleteAsync(id);
-    }
 }

@@ -11,10 +11,6 @@ public class PostgresContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Produit>()
-            .Property(p => p.Id)
-            .ValueGeneratedNever();
-
         modelBuilder.Entity<Commande>()
             .HasOne(c => c.Produit)
             .WithMany()

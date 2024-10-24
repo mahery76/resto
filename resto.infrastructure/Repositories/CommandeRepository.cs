@@ -30,19 +30,5 @@ public class CommandeRepository : ICommandeRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Commande commande)
-    {
-        _context.Commandes.Update(commande);
-        await _context.SaveChangesAsync();
-    }
 
-    public async Task DeleteAsync(Guid id)
-    {
-        var commande = await GetByIdAsync(id);
-        if(commande != null)
-        {
-            _context.Commandes.Remove(commande);
-            await _context.SaveChangesAsync();
-        }
-    }
 }

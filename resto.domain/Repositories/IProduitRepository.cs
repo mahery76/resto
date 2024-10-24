@@ -8,6 +8,6 @@ public interface IProduitRepository
     Task<Produit> GetByIdAsync(Guid id);
     Task<IEnumerable<Produit>> GetAllAsync();
     Task CreateAsync(Produit produit);
-    Task UpdateAsync(Produit produit);
-    Task DeleteAsync(Guid id);
+    Task<int> UpdateAsync(Produit produit);
+    Task<int> DeleteAsync(Guid id);
 }
